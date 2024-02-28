@@ -59,11 +59,11 @@ order by valor_total asc limit 5;
 
 
 #Ex04
-Select transactions.company.company_name, 
+Select transactions.company.country, 
 avg(transactions.transaction.amount) as media_transacciones
 from transactions.company
 join transactions.transaction on transactions.company.id = transactions.transaction.company_id
-group by transactions.company.company_name
+group by transactions.company.country
 order by media_transacciones desc;
 
 #Nivel 3
