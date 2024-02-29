@@ -77,11 +77,10 @@ group by transactions.company.company_name, transactions.company.phone,transacti
 order by Transacciones_total desc;
 
 #Ex02 
-Select date(transactions.transaction.timestamp) as fecha, transactions.company.company_name 
+Select distinct transactions.company.company_name 
 from transactions.company
 join transactions.transaction on transactions.company.id = transactions.transaction.company_id
 where date(transactions.transaction.timestamp) in ("2022-03-16", "2022-02-13","2022-02-28")
-order by fecha asc;
-
+;
 
 
