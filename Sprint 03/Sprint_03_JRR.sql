@@ -375,6 +375,8 @@ SET foreign_key_checks = 1;
 
 #renombramos la tabla user, al nombre correspodiente, data_user
 rename table user to data_user;
+#Modificamos el valor de pin de int a varchar de la tabla credit_card
+alter table credit_card modify column pin varchar(4);
 
 #Ex09
 #En este ejercicio he añadido el monto de la transaccion, pais usuario y pais compañia como datos de interes.
