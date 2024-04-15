@@ -76,12 +76,12 @@ SELECT
     AVG(transaction.amount) AS promedio
     FROM company
     JOIN transaction ON company.id = transaction.company_id
-    GROUP BY Compañia,telefono,pais
-    ORDER BY promedio DESC;
-
+    GROUP BY Compañia,telefono,pais;
+    
 #Comprobamos:
 SELECT * 
-FROM VistaMarketing;
+FROM VistaMarketing
+order by promedio desc;
 
 #Nivel 2 Ex03
 SELECT *
