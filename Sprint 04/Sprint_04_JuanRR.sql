@@ -1,34 +1,20 @@
 
 #Nivel 1 Ex 01
-select * from user
-where id in (select user_id from transactions
-group by user_id
-having count(transactions.id) >= 30
+SELECT * FROM user
+WHERE id IN (SELECT user_id FROM transactions
+GROUP BY user_id
+HAVING count(transactions.id) >= 30
 );
 
 #Ex02
-#Ex 02
-#Esta query trata los iban en conjunto, es decir no divide entre mismos iban, el monto de las transacciones se suma
-#pero no se trata un mismo iban como una entidad diferente
-select avg(suma_iban)
-from (select sum(amount) as suma_iban
-from transactions
-join credit_cards on transactions.card_id= credit_cards.id
-join companies on transactions.business_id=companies.comapny_id
-where companies.company_name= 'Donec Ltd'
-group by iban) as suma_por_iban;
-
 #En este caso se suma las transacciones y se divide por el numero de iban aunque sean el mismo:
-select  avg(transactions.amount) as media_trans_iban_DonecLtd
-from transactions
-join credit_cards on transactions.card_id = credit_cards.id
-join companies on transactions.business_id = companies.comapny_id
-where companies.company_name= 'Donec Ltd'
-group by iban;
+SELECT  AVG(transactions.amount) as media_trans_iban_DonecLtd, iban
+FROM transactions
+JOIN credit_cards ON transactions.card_id = credit_cards.id
+JOIN companies ON transactions.business_id = companies.comapny_id
+WHERE companies.company_name= 'Donec Ltd'
+GROUP BY iban;
 
-select card_id, timestamp,declined from transactions
-order by card_id, timestamp desc
-;
 
 #Creacion Tabla Tarjetas Activadas:
 #CREACION TABLA NIVEL 2
@@ -38,7 +24,7 @@ order by card_id, timestamp desc
 #como 0(desactivada)
 
 
-create table tarjetas_activadas as
+CREATE TABLE tarjetas_activadas AS
 SELECT t.card_id,
        CASE 
            WHEN (SELECT COUNT(*) 
@@ -53,7 +39,8 @@ FROM transactions t
 GROUP BY t.card_id;
 
 #Comprobamos
-select * from tarjetas_activadas;
+SELECT *
+FROM tarjetas_activadas;
 
 #ex 03
 SELECT COUNT(CARD_ID) AS CANTIDAD_TARJETAS_ACTIVAS
@@ -62,7 +49,7 @@ WHERE ACTIVADA = 1;
 
 #La tabla de enlace fue creada en powerquery en el pdf esta explicado.
 #Nivel 3 Ex01
-select p.product_name, count(tp.product_id) as recuento_ventas
-from products p
-join transactions_product tp on p.id = tp.product_id
-group by p.product_name;
+SELECT p.product_name, count(tp.product_id) as recuento_ventas
+FROM products p
+JOIN transactions_product tp ON p.id = tp.product_id
+GROUP BY p.product_name;
