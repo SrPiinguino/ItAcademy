@@ -1,10 +1,10 @@
 #Nivel 1 - Ex01
-select *
-from transaction
-  where transaction.company_id in (
-    select id
-    from company
-    where company.country = "Germany"
+SELECT *
+FROM transaction
+  WHERE company_id IN (
+    SELECT id
+    FROM company
+    WHERE country = "Germany"
   );
 
 #Nivel 1 - ex02
@@ -13,54 +13,48 @@ FROM company
 WHERE EXISTS (
     SELECT 1
     FROM transaction
-    WHERE transaction.company_id = company.id
-    AND transaction.amount > (SELECT AVG(amount) FROM transaction)
+    WHERE company_id = company.id
+    AND amount > (SELECT AVG(amount) FROM transaction)
 );
 
 #Nivel 1 - ex03
-select company_name, t.* 
-from transaction t, 
-(select id, company_name
-from company
-where company_name like "c%") as c
-where company_id = c.id;
+SELECT company_name, t.* 
+FROM transaction t, 
+(SELECT id, company_name
+FROM company
+WHERE company_name like "c%") AS c
+WHERE company_id = c.id;
 
 #Nivel 1 - ex04
-select company_name from company
- where not exists (select * from transaction
-                    where company_id = company.id);                    
+SELECT company_name 
+FROM company
+ WHERE NOT EXISTS (SELECT * 
+					FROM transaction
+                    WHERE company_id = company.id);                    
 
 #Nivel 2 - ex01
-SELECT t.*, 
-       (SELECT country FROM company WHERE id = t.company_id) AS country
+SELECT t.*
 FROM transaction t
-WHERE EXISTS (
-    SELECT 1 
-    FROM company c 
-    WHERE c.id = t.company_id 
-    AND c.country IN (
-        SELECT country 
-        FROM company 
-        WHERE company_name = 'Non Institute'
-    )
+WHERE company_id IN (
+    SELECT id 
+    FROM company  
+    WHERE country = (SELECT country FROM company WHERE company_name= "Non Institute")
 );
 
 #Nivel 2 -ex02
-select c.company_name, valor
-from company c, (select company_id, max(amount) as valor
-from transaction
-group by company_id
-order by valor desc limit 1) as t
-where c.id = t.company_id
-;
+SELECT *
+FROM company 
+WHERE id IN (SELECT company_id
+			FROM transaction
+            WHERE amount = (SELECT max(amount)
+							FROM transaction));
 
 #Nivel 3 - ex01
-select country, avg(amount)as media
-from company, transaction
-where company.id= transaction.company_id
-group by country 
-having avg(amount)>(select avg(amount) 
-from transaction)
+SELECT AVG(t.amount) AS avg_transaction,
+    (SELECT c.country FROM company c WHERE c.id = t.company_id) AS country    
+FROM transaction t
+GROUP BY country
+HAVING avg_transaction > (SELECT AVG(amount) FROM transaction)
 ;
 
 
