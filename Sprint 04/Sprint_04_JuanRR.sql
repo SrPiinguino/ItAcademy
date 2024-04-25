@@ -1,6 +1,7 @@
 
 #Nivel 1 Ex 01
-SELECT * FROM user
+SELECT * 
+FROM user
 WHERE id IN (SELECT user_id FROM transactions
 GROUP BY user_id
 HAVING count(transactions.id) >= 30
